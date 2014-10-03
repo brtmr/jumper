@@ -1,0 +1,42 @@
+[
+    {
+    "id_string"     :   "tile_stone",
+    "file"          :   "16blox.png",
+    "width"         :   16,
+    "height"        :   16,
+    "offset_x"      :   64,
+    "offset_y"      :   0 
+    },
+    {
+    "id_string"     :   "tile_stone_skull",
+    "file"          :   "16blox.png",
+    "width"         :   16,
+    "height"        :   16,
+    "offset_x"      :   48,
+    "offset_y"      :   0 
+    },
+    {
+    "id_string"     :   "player_anim_0",
+    "file"          :   "wiz_staff_down.png",
+    "width"         :   24,
+    "height"        :   27,
+    "offset_x"      :   0,
+    "offset_y"      :   0 
+    },
+    {
+    "id_string"     :   "player_anim_1",
+    "file"          :   "wiz_staff_down.png",
+    "width"         :   24,
+    "height"        :   27,
+    "offset_x"      :   24,
+    "offset_y"      :   0 
+    },
+    {
+    "id_string"     :   "player_anim_2",
+    "file"          :   "wiz_staff_down.png",
+    "width"         :   24,
+    "height"        :   27,
+    "offset_x"      :   48,
+    "offset_y"      :   0 
+    }
+]
