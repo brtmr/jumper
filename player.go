@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	//	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -25,7 +25,7 @@ func Init_player(spr SpriteManager, renderer *sdl.Renderer,
 		spr.GetSprite("player_anim_2")}
 	pos := Init_pos(50, 50)
 	return Player{pos, pos, pos, sprites, renderer, level, false, true,
-		sprites[0].W * 2, sprites[0].H * 2, DIRECTION_RIGHT}
+		sprites[0].W * SCALE, sprites[0].H * SCALE, DIRECTION_RIGHT}
 }
 
 func (p Player) Draw() {
@@ -44,7 +44,7 @@ func (p Player) Draw() {
 	sprite := p.Sprites[i]
 	X := p.DrawPos.GetX()
 	Y := p.DrawPos.GetY()
-	dstRec := sdl.Rect{X, Y, 2 * sprite.Rect.W, 2 * sprite.Rect.H}
+	dstRec := sdl.Rect{X, Y, SCALE * sprite.Rect.W, SCALE * sprite.Rect.H}
 	if p.direction == DIRECTION_RIGHT {
 		p.Renderer.Copy(sprite.Texture, sprite.Rect, &dstRec)
 	} else {
@@ -95,7 +95,7 @@ func (p *Player) Update() {
 		}
 	}
 
-	fmt.Printf("Current velocity: x %.2f y %.2f\n", p.CurrentPos.GetVelX(), p.CurrentPos.GetVelY())
+	//fmt.Printf("Current velocity: x %.2f y %.2f\n", p.CurrentPos.GetVelX(), p.CurrentPos.GetVelY())
 }
 
 func (p *Player) Collide(i, j int32) {

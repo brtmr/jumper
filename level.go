@@ -11,7 +11,7 @@ type Level struct {
 	Renderer *sdl.Renderer
 }
 
-const Tile_size = 32
+const Tile_size = 16 * SCALE
 
 type Tile struct {
 	Sprite Sprite
@@ -26,7 +26,7 @@ func DummyLevel(spr SpriteManager, renderer *sdl.Renderer) Level {
 		for j := 0; j < 200; j++ {
 			var tl Tile
 			var solid bool
-			if i < 15 {
+			if i < 9 {
 				solid = false
 			} else {
 				solid = true

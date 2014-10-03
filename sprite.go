@@ -75,6 +75,7 @@ func Init_from_json(json_path string, renderer *sdl.Renderer) SpriteManager {
 			}
 			//put it in the map, using the filename as key
 			unique_textures[tile_object.File] = texture
+			surface.Free()
 		}
 	}
 	//the map that will represent the tilemanager
@@ -87,4 +88,11 @@ func Init_from_json(json_path string, renderer *sdl.Renderer) SpriteManager {
 		m[tile_object.Id_string] = spr
 	}
 	return SpriteManager{m}
+}
+
+func (spr *SpriteManager) TearDown() {
+	for _, v := range spr.sprmap {
+		v.Texture.Destroy()
+	}
+
 }

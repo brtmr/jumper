@@ -6,13 +6,14 @@ import (
 	"os"
 )
 
+const SCALE = 3
 const DIRECTION_RIGHT = 0
 const DIRECTION_LEFT = 1
 const STOP = -1
-const RUNSPEED = 10
-const JUMPSPEED = -17
-const GRAVITY = 1.2
-const TOPSPEED = 17
+const RUNSPEED = SCALE * 5
+const JUMPSPEED = -(SCALE * 8)
+const GRAVITY = SCALE * 0.6
+const TOPSPEED = SCALE * 8
 
 type GameData struct {
 	Spr      SpriteManager
@@ -41,13 +42,12 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Failed to initialize SDL: %s\n", sdl.GetError())
 		os.Exit(2)
 	}
-
-	window := sdl.CreateWindow("goplot", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
-		1600, 900, sdl.WINDOW_SHOWN|sdl.WINDOW_FULLSCREEN)
 	/*
 		window := sdl.CreateWindow("goplot", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
-			800, 600, sdl.WINDOW_SHOWN)
+			1600, 900, sdl.WINDOW_SHOWN|sdl.WINDOW_FULLSCREEN)
 	*/
+	window := sdl.CreateWindow("goplot", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
+		800, 600, sdl.WINDOW_SHOWN)
 	if window == nil {
 		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", sdl.GetError())
 		os.Exit(2)
@@ -112,6 +112,7 @@ func main() {
 			}
 		}
 	}
+	gd.Spr.TearDown()
 	sdl.Quit()
 }
 
