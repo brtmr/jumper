@@ -46,7 +46,7 @@ func main() {
 		window := sdl.CreateWindow("goplot", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 			1600, 900, sdl.WINDOW_SHOWN|sdl.WINDOW_FULLSCREEN)
 	*/
-	window := sdl.CreateWindow("goplot", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
+	window := sdl.CreateWindow("jumper", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		800, 600, sdl.WINDOW_SHOWN)
 	if window == nil {
 		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", sdl.GetError())
