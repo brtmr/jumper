@@ -9,8 +9,10 @@ type Level struct {
 	tiles    [][]Tile
 	camera   *Camera
 	Renderer *sdl.Renderer
-	dimx     int
-	dimy     int
+	spr      SpriteManager
+	//dimension in tiles
+	dimx int
+	dimy int
 }
 
 const Tile_size = 16 * SCALE
@@ -69,20 +71,35 @@ func DummyLevel(spr SpriteManager, renderer *sdl.Renderer, cam *Camera) Level {
 	for i := 0; i < 10; i++ {
 		tiles[i][19] = Tile{spr.GetSprite("tile_stone"), 100, true}
 	}
-	return Level{tiles[:][:], cam, renderer,
-		lsize, lsize}
+	return Level{tiles[:][:], cam, renderer, spr, lsize, lsize}
 }
 
 func (lvl Level) Draw() {
-	for y, arr := range lvl.tiles {
-		for x, tl := range arr {
+	minX := (lvl.camera.X() / Tile_size)
+	maxX := (lvl.camera.X() + SCREEN_WIDTH/Tile_size) + 1
+	minY := (lvl.camera.Y() / Tile_size)
+	maxY := (lvl.camera.Y() + SCREEN_HEIGHT/Tile_size) + 1
+
+	BoundsInt32(0, int32(lvl.dimx), &minX)
+	BoundsInt32(0, int32(lvl.dimx), &maxX)
+	BoundsInt32(0, int32(lvl.dimy), &minY)
+	BoundsInt32(0, int32(lvl.dimy), &maxY)
+
+	for y := minY; y < maxY; y++ {
+		for x := minX; x < maxX; x++ {
+			tl := lvl.tiles[y][x]
+			xpos := int32(x)*Tile_size - lvl.camera.X()
+			ypos := int32(y)*Tile_size - lvl.camera.Y()
+			dstRec := sdl.Rect{xpos, ypos, Tile_size, Tile_size}
 			if tl.Solid() {
-				xpos := int32(x)*Tile_size - lvl.camera.X()
-				ypos := int32(y)*Tile_size - lvl.camera.Y()
-				dstRec := sdl.Rect{xpos, ypos, Tile_size, Tile_size}
 				lvl.Renderer.Copy(tl.Sprite().Texture, tl.Sprite().Rect,
 					&dstRec)
 			}
+			lvl.Renderer.SetDrawColor(255, 0, 0, 255)
+			lvl.Renderer.DrawRect(&dstRec)
+			font := lvl.spr.GetFont("LiberationMono5")
+			text := fmt.Sprintf("%02d,%02d", y, x)
+			DrawTextAt(font, text, xpos+2, ypos+2, lvl.Renderer)
 		}
 	}
 }

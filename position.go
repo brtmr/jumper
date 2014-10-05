@@ -12,12 +12,7 @@ type Position struct {
 }
 
 func capVelocity(x float64) float64 {
-	if x > TOPSPEED {
-		x = TOPSPEED
-	}
-	if x < (-TOPSPEED) {
-		x = -TOPSPEED
-	}
+	BoundsFloat64(-TOPSPEED, TOPSPEED, &x)
 	return x
 }
 

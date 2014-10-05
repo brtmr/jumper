@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
+	"github.com/veandco/go-sdl2/sdl_ttf"
 	"os"
 )
 
@@ -20,11 +21,11 @@ const HALF_SCREEN_WIDTH = SCREEN_WIDTH / 2
 const HALF_SCREEN_HEIGHT = SCREEN_HEIGHT / 2
 
 type GameData struct {
-	Spr           SpriteManager
-	Lvl           Level
-	Ply           Player
-	renderer      *sdl.Renderer
-	spaceReleased bool
+	Spr      SpriteManager
+	Lvl      Level
+	Ply      Player
+	renderer *sdl.Renderer
+	gameOver bool
 }
 
 type GameObject interface {
@@ -47,6 +48,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Failed to initialize SDL: %s\n", sdl.GetError())
 		os.Exit(2)
 	}
+	ttf.Init()
 	/*
 		        window := sdl.CreateWindow("goplot", sdl.WINDOWPOS_UNDEFINED,
 		            sdl.WINDOWPOS_UNDEFINED,
@@ -67,8 +69,6 @@ func main() {
 	}
 
 	gd := Game_Init(renderer)
-
-	gameOver := false
 
 	dt := 0.03
 	accumulator := 0.0
@@ -106,21 +106,12 @@ func main() {
 			end mainloop
 		*/
 
-		if gameOver {
+		if gd.gameOver {
 			break
-		}
-
-		var event sdl.Event
-		for event = sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
-			switch t := event.(type) {
-			case *sdl.QuitEvent:
-				_ = t
-				gameOver = true
-				break
-			}
 		}
 	}
 	gd.Spr.TearDown()
+	ttf.Quit()
 	sdl.Quit()
 }
 
@@ -129,7 +120,7 @@ func Game_Init(renderer *sdl.Renderer) GameData {
 	cam := Camera{0, 0}
 	lvl := DummyLevel(spr, renderer, &cam)
 	ply := Init_player(spr, renderer, &lvl, &cam)
-	return GameData{spr, lvl, ply, renderer, true}
+	return GameData{spr, lvl, ply, renderer, false}
 }
 
 func (gd *GameData) Draw() {
@@ -144,7 +135,7 @@ func (gd *GameData) Draw() {
 }
 
 func (gd *GameData) Update() {
-	gd.handleKeys()
+	gd.handleEvents()
 	gd.Ply.Update()
 }
 
@@ -153,28 +144,56 @@ func (gd *GameData) Interpolate(alpha float64) {
 	gd.Ply.SetCamera()
 }
 
-func (gd *GameData) handleKeys() {
-	keystate := sdl.GetKeyboardState()
-	if keystate[sdl.GetScancodeFromName("LEFT")] == 1 {
+func (gd *GameData) handleKeyDown(sym sdl.Keysym) {
+	switch sym.Scancode {
+	case sdl.GetScancodeFromName("SPACE"):
+		gd.Ply.Jump()
+		break
+	case sdl.GetScancodeFromName("RIGHT"):
+		gd.Ply.SetDirection(DIRECTION_RIGHT)
+		break
+	case sdl.GetScancodeFromName("LEFT"):
+		gd.Ply.SetDirection(DIRECTION_LEFT)
+		break
+	}
+}
+
+func (gd *GameData) handleKeyUp(sym sdl.Keysym) {
+	switch sym.Scancode {
+	case sdl.GetScancodeFromName("SPACE"):
+		break
+	case sdl.GetScancodeFromName("LEFT"):
+		gd.Ply.SetDirection(STOP)
+		break
+	case sdl.GetScancodeFromName("RIGHT"):
+		gd.Ply.SetDirection(STOP)
+		break
+	}
+}
+
+func (gd *GameData) handleEvents() {
+	var event sdl.Event
+	for event = sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
+		switch t := event.(type) {
+		case *sdl.QuitEvent:
+			_ = t
+			gd.gameOver = true
+			break
+		case *sdl.KeyDownEvent:
+			gd.handleKeyDown(t.Keysym)
+			break
+		case *sdl.KeyUpEvent:
+			gd.handleKeyUp(t.Keysym)
+			break
+		}
+	}
+	kbstate := sdl.GetKeyboardState()
+	if kbstate[sdl.GetScancodeFromName("LEFT")] == 1 {
 		gd.Ply.SetDirection(DIRECTION_LEFT)
 	}
-	if keystate[sdl.GetScancodeFromName("RIGHT")] == 1 {
+	if kbstate[sdl.GetScancodeFromName("RIGHT")] == 1 {
 		gd.Ply.SetDirection(DIRECTION_RIGHT)
 	}
-	if keystate[sdl.GetScancodeFromName("RIGHT")]+
-		keystate[sdl.GetScancodeFromName("LEFT")] == 0 {
-		gd.Ply.SetDirection(STOP)
-	}
-	if keystate[sdl.GetScancodeFromName("SPACE")] == 0 {
-		gd.spaceReleased = true
-	}
-	if keystate[sdl.GetScancodeFromName("SPACE")] == 1 {
-		if gd.spaceReleased {
-			gd.Ply.Jump()
-		}
-		gd.spaceReleased = false
-	}
-
 }
 
 func GetDataPath() string {

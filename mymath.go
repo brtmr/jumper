@@ -20,3 +20,27 @@ func Round_diff(x float64) (int32, float64) {
 	}
 	return int_part, float_part
 }
+
+func BoundsInt(lower, upper int, x *int) {
+	if *x < lower {
+		*x = lower
+	} else if *x > upper {
+		*x = upper
+	}
+}
+
+func BoundsFloat64(lower, upper float64, x *float64) {
+	if *x < lower {
+		*x = lower
+	} else if *x > upper {
+		*x = upper
+	}
+}
+
+func BoundsInt32(lower, upper int32, x *int32) {
+	if *x < lower {
+		*x = lower
+	} else if *x > upper {
+		*x = upper
+	}
+}

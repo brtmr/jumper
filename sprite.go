@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/sdl_image"
+	"github.com/veandco/go-sdl2/sdl_ttf"
 	"io/ioutil"
 	"os"
 )
@@ -30,12 +31,17 @@ type Sprite struct {
 }
 
 type SpriteManager struct {
-	sprmap map[string]Sprite
+	sprmap  map[string]Sprite
+	fontMap map[string]*ttf.Font
 }
 
 //methods
 func (spr SpriteManager) GetSprite(id string) Sprite {
 	return spr.sprmap[id]
+}
+
+func (spr SpriteManager) GetFont(id string) *ttf.Font {
+	return spr.fontMap[id]
 }
 
 //functions
@@ -64,7 +70,8 @@ func Init_from_json(json_path string, renderer *sdl.Renderer) SpriteManager {
 			surface := img.Load(GetDataPath() + tile_object.File)
 			//create a surface
 			if surface == nil {
-				fmt.Println("Unable to load sprite " + tile_object.Id_string + " from file " + tile_object.File)
+				fmt.Println(
+					"Unable to load sprite " + tile_object.Id_string + "from file " + tile_object.File)
 				os.Exit(1)
 			}
 			//create a texture
@@ -83,11 +90,16 @@ func Init_from_json(json_path string, renderer *sdl.Renderer) SpriteManager {
 	//iterate over the json objects, and create sprites
 	for _, tile_object := range json_data_arr {
 		//create the clipping rectangle for the texture
-		rect := sdl.Rect{tile_object.Offset_x, tile_object.Offset_y, tile_object.Width, tile_object.Height}
-		spr := Sprite{unique_textures[tile_object.File], &rect, tile_object.Id_string, rect.W, rect.H}
+		rect := sdl.Rect{tile_object.Offset_x, tile_object.Offset_y,
+			tile_object.Width, tile_object.Height}
+		spr := Sprite{unique_textures[tile_object.File], &rect,
+			tile_object.Id_string, rect.W, rect.H}
 		m[tile_object.Id_string] = spr
 	}
-	return SpriteManager{m}
+
+	fontMap := Init_Fonts()
+
+	return SpriteManager{m, fontMap}
 }
 
 func (spr *SpriteManager) TearDown() {
@@ -95,4 +107,16 @@ func (spr *SpriteManager) TearDown() {
 		v.Texture.Destroy()
 	}
 
+}
+
+func Init_Fonts() map[string]*ttf.Font {
+	font, err := ttf.OpenFont(FPATH, SMALLSIZE)
+	if err != nil {
+		fmt.Println(err)
+		fmt.Println("Font couldn't be loaded")
+		os.Exit(-1)
+	}
+	m := make(map[string]*ttf.Font)
+	m["LiberationMono5"] = font
+	return m
 }

@@ -1,7 +1,7 @@
 package main
 
 import (
-	//	"fmt"
+	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -172,16 +172,19 @@ func (p *Player) SetCamera() {
 }
 
 func (p Player) SolidGround() bool {
+	return false
 }
 
 func (p Player) IHitMyHead() bool {
-	j := p.currentPos.X() / Tile_size
-	i := (p.currentPos.Y() - 1) / Tile_size
+	j := int(p.currentPos.X() / Tile_size)
+	i := int((p.currentPos.Y() - 1) / Tile_size)
 	if p.level.IsSolid(i, j) {
+		fmt.Printf("ouch.left. %d#%d \n", i, j)
 		return true
 	}
-	j = (p.currentPos.X() + p.w) / Tile_size
+	j = int((p.currentPos.X() + p.w) / Tile_size)
 	if p.level.IsSolid(i, j) {
+		fmt.Printf("ouch.right. %d#%d \n", i, j)
 		return true
 	}
 	return false
