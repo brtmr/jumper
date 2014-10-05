@@ -6,11 +6,12 @@ import (
 )
 
 type Player struct {
-	PreviousPos Position
-	CurrentPos  Position
-	DrawPos     Position
-	Sprites     []Sprite
-	Renderer    *sdl.Renderer
+	previousPos Position
+	currentPos  Position
+	drawPos     Position
+	sprites     []Sprite
+	renderer    *sdl.Renderer
+	camera      *Camera
 	lvl         Level
 	running     bool
 	jumping     bool
@@ -20,15 +21,18 @@ type Player struct {
 }
 
 func Init_player(spr SpriteManager, renderer *sdl.Renderer,
-	level Level) Player {
-	sprites := []Sprite{spr.GetSprite("player_anim_0"), spr.GetSprite("player_anim_1"),
+	level Level, camera *Camera) Player {
+	sprites := []Sprite{spr.GetSprite("player_anim_0"),
+		spr.GetSprite("player_anim_1"),
 		spr.GetSprite("player_anim_2")}
-	pos := Init_pos(50, 50)
-	return Player{pos, pos, pos, sprites, renderer, level, false, true,
+	pos := Init_pos(50, 50,
+		int32(level.DimX())-SCALE*sprites[0].W,
+		int32(level.DimY())-SCALE*sprites[0].H)
+	return Player{pos, pos, pos, sprites, renderer, camera, level, false, true,
 		sprites[0].W * SCALE, sprites[0].H * SCALE, DIRECTION_RIGHT}
 }
 
-func (p Player) Draw() {
+func (p *Player) Draw() {
 	var i int
 	if p.running {
 		i = int((sdl.GetTicks() / 150) % 4)
@@ -41,14 +45,15 @@ func (p Player) Draw() {
 	if p.jumping {
 		i = 2
 	}
-	sprite := p.Sprites[i]
-	X := p.DrawPos.GetX()
-	Y := p.DrawPos.GetY()
+	sprite := p.sprites[i]
+	X := p.drawPos.X()
+	Y := p.drawPos.Y()
 	dstRec := sdl.Rect{X, Y, SCALE * sprite.Rect.W, SCALE * sprite.Rect.H}
 	if p.direction == DIRECTION_RIGHT {
-		p.Renderer.Copy(sprite.Texture, sprite.Rect, &dstRec)
+		p.renderer.Copy(sprite.Texture, sprite.Rect, &dstRec)
 	} else {
-		p.Renderer.CopyEx(sprite.Texture, sprite.Rect, &dstRec, 0, nil, sdl.FLIP_HORIZONTAL)
+		p.renderer.CopyEx(sprite.Texture, sprite.Rect, &dstRec,
+			0, nil, sdl.FLIP_HORIZONTAL)
 	}
 }
 
@@ -56,16 +61,16 @@ func (p *Player) SetDirection(direction int) {
 	switch direction {
 	case DIRECTION_RIGHT:
 		p.running = true
-		p.CurrentPos.SetVelX(RUNSPEED)
+		p.currentPos.SetVelX(RUNSPEED)
 		p.direction = DIRECTION_RIGHT
 		break
 	case DIRECTION_LEFT:
 		p.running = true
-		p.CurrentPos.SetVelX(-RUNSPEED)
+		p.currentPos.SetVelX(-RUNSPEED)
 		p.direction = DIRECTION_LEFT
 		break
 	case STOP:
-		p.CurrentPos.SetVelX(0)
+		p.currentPos.SetVelX(0)
 		p.running = false
 		break
 	}
@@ -73,21 +78,21 @@ func (p *Player) SetDirection(direction int) {
 
 func (p *Player) Jump() {
 	if !p.jumping {
-		p.CurrentPos.SetVelY(JUMPSPEED)
+		p.currentPos.SetVelY(JUMPSPEED)
 		p.jumping = true
 	}
 }
 
 func (p *Player) Update() {
 
-	p.PreviousPos = p.CurrentPos
-	p.CurrentPos = p.PreviousPos.Update()
+	p.previousPos = p.currentPos
+	p.currentPos = p.previousPos.Update()
 
 	//collision handling
-	left_x_index := p.CurrentPos.GetX() / Tile_size
-	right_x_index := (p.CurrentPos.GetX() + p.w) / Tile_size
-	top_y_index := p.CurrentPos.GetY() / Tile_size
-	bottom_y_index := (p.CurrentPos.GetY() + p.h) / Tile_size
+	left_x_index := p.currentPos.X() / Tile_size
+	right_x_index := (p.currentPos.X() + p.w) / Tile_size
+	top_y_index := p.currentPos.Y() / Tile_size
+	bottom_y_index := (p.currentPos.Y() + p.h) / Tile_size
 
 	for i := top_y_index; i <= bottom_y_index; i++ {
 		for j := left_x_index; j <= right_x_index; j++ {
@@ -95,25 +100,25 @@ func (p *Player) Update() {
 		}
 	}
 
-	//fmt.Printf("Current velocity: x %.2f y %.2f\n", p.CurrentPos.GetVelX(), p.CurrentPos.GetVelY())
+	//fmt.Printf("current velocity: x %.2f y %.2f\n", p.currentPos.GetVelX(), p.currentPos.GetVelY())
 }
 
 func (p *Player) Collide(i, j int32) {
-	if p.lvl.IsSolid(i, j) {
+	if p.lvl.IsSolid(int(i), int(j)) {
 		x, y := getMTV(
-			sdl.Rect{p.CurrentPos.GetX(), p.CurrentPos.GetY(), p.w, p.h},
+			sdl.Rect{p.currentPos.X(), p.currentPos.Y(), p.w, p.h},
 			sdl.Rect{j * Tile_size, i * Tile_size, Tile_size, Tile_size})
 		if x != 0 {
-			p.CurrentPos.SetVelX(0)
+			p.currentPos.SetVelX(0)
 		}
 		if y != 0 {
-			p.CurrentPos.SetVelY(0)
+			p.currentPos.SetVelY(0)
 		}
 		if y < 0 {
 			p.jumping = false
 		}
-		p.CurrentPos.SetX(p.CurrentPos.GetX() + x)
-		p.CurrentPos.SetY(p.CurrentPos.GetY() + y)
+		p.currentPos.SetX(p.currentPos.X() + x)
+		p.currentPos.SetY(p.currentPos.Y() + y)
 	}
 }
 
@@ -148,5 +153,8 @@ func getMTV(p, t sdl.Rect) (x, y int32) {
 }
 
 func (p *Player) Interpolate(alpha float64) {
-	p.DrawPos = InterpolatePos(p.CurrentPos, p.PreviousPos, alpha)
+	p.drawPos = InterpolatePos(p.currentPos, p.previousPos, alpha)
+}
+
+func (p *Player) setCamera() {
 }

@@ -7,6 +7,8 @@ type Position struct {
 	rem_y float64
 	vel_x float64
 	vel_y float64
+	max_x int32
+	max_y int32
 }
 
 func capVelocity(x float64) float64 {
@@ -35,27 +37,27 @@ func (p *Position) SetVelY(vel_y float64) {
 	p.vel_y = vel_y
 }
 
-func (p Position) GetX() int32 {
+func (p Position) X() int32 {
 	return p.x
 }
 
-func (p Position) GetY() int32 {
+func (p Position) Y() int32 {
 	return p.y
 }
 
-func (p Position) GetRemX() float64 {
+func (p Position) RemX() float64 {
 	return p.rem_x
 }
 
-func (p Position) GetRemY() float64 {
+func (p Position) RemY() float64 {
 	return p.rem_y
 }
 
-func (p Position) GetVelX() float64 {
+func (p Position) VelX() float64 {
 	return p.vel_x
 }
 
-func (p Position) GetVelY() float64 {
+func (p Position) VelY() float64 {
 	return p.vel_y
 }
 
@@ -75,31 +77,37 @@ func (p Position) Update() Position {
 	if x < 0 {
 		x = 0
 	}
+	if x > p.max_x {
+		x = p.max_x
+	}
 	if y < 0 {
 		y = 0
 	}
+	if y > p.max_y {
+		y = p.max_y
+	}
 
-	return Position{x, y, rem_x, rem_y, vel_x, vel_y}
+	return Position{x, y, rem_x, rem_y, vel_x, vel_y, p.max_x, p.max_y}
 }
 
 func InterpolatePos(current, previous Position, alpha float64) Position {
-	old_x := previous.GetX()
-	new_x := current.GetX()
-	old_rem_x := previous.GetRemX()
-	new_rem_x := current.GetRemX()
+	old_x := previous.X()
+	new_x := current.X()
+	old_rem_x := previous.RemX()
+	new_rem_x := current.RemX()
 	diff_x := (float64(new_x-old_x) + (new_rem_x - old_rem_x)) * (alpha)
 	int_x, _ := Round_diff(old_rem_x + diff_x)
 
-	old_y := previous.GetY()
-	new_y := current.GetY()
-	old_rem_y := previous.GetRemY()
-	new_rem_y := current.GetRemY()
+	old_y := previous.Y()
+	new_y := current.Y()
+	old_rem_y := previous.RemY()
+	new_rem_y := current.RemY()
 	diff_y := (float64(new_y-old_y) + (new_rem_y - old_rem_y)) * (alpha)
 	int_y, _ := Round_diff(old_rem_y + diff_y)
 
-	return Init_pos(old_x+int_x, old_y+int_y)
+	return Init_pos(old_x+int_x, old_y+int_y, previous.max_x, previous.max_y)
 }
 
-func Init_pos(x int32, y int32) Position {
-	return Position{x, y, 0, 0, 0, 0}
+func Init_pos(x, y, max_x, max_y int32) Position {
+	return Position{x, y, 0, 0, 0, 0, max_x, max_y}
 }

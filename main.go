@@ -14,6 +14,8 @@ const RUNSPEED = SCALE * 5
 const JUMPSPEED = -(SCALE * 8)
 const GRAVITY = SCALE * 0.6
 const TOPSPEED = SCALE * 8
+const SCREEN_WIDTH = 800
+const SCREEN_HEIGHT = 600
 
 type GameData struct {
 	Spr      SpriteManager
@@ -43,18 +45,21 @@ func main() {
 		os.Exit(2)
 	}
 	/*
-		window := sdl.CreateWindow("goplot", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
-			1600, 900, sdl.WINDOW_SHOWN|sdl.WINDOW_FULLSCREEN)
+		        window := sdl.CreateWindow("goplot", sdl.WINDOWPOS_UNDEFINED,
+		            sdl.WINDOWPOS_UNDEFINED,
+					1600, 900, sdl.WINDOW_SHOWN|sdl.WINDOW_FULLSCREEN)
 	*/
-	window := sdl.CreateWindow("jumper", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
-		800, 600, sdl.WINDOW_SHOWN)
+	window := sdl.CreateWindow("jumper", sdl.WINDOWPOS_UNDEFINED,
+		sdl.WINDOWPOS_UNDEFINED,
+		SCREEN_WIDTH, SCREEN_HEIGHT, sdl.WINDOW_SHOWN)
 	if window == nil {
 		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", sdl.GetError())
 		os.Exit(2)
 	}
 	renderer := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
 	if renderer == nil {
-		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n", sdl.GetError())
+		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n",
+			sdl.GetError())
 		os.Exit(2)
 	}
 
@@ -118,13 +123,18 @@ func main() {
 
 func Game_Init(renderer *sdl.Renderer) GameData {
 	spr := Init_from_json(GetDataPath()+"sprites.json", renderer)
-	lvl := DummyLevel(spr, renderer)
-	ply := Init_player(spr, renderer, lvl)
+	cam := Camera{0, 0}
+	lvl := DummyLevel(spr, renderer, &cam)
+	ply := Init_player(spr, renderer, lvl, &cam)
 	return GameData{spr, lvl, ply, renderer}
 }
 
 func (gd *GameData) Draw() {
 	gd.renderer.Clear()
+	//draw the sky
+	sky := gd.Spr.GetSprite("sky")
+	gd.renderer.Copy(sky.Texture, sky.Rect, nil)
+
 	gd.Lvl.Draw()
 	gd.Ply.Draw()
 	gd.renderer.Present()
@@ -143,7 +153,8 @@ func (gd *GameData) handleKeys() {
 	if keystate[sdl.GetScancodeFromName("RIGHT")] == 1 {
 		gd.Ply.SetDirection(DIRECTION_RIGHT)
 	}
-	if keystate[sdl.GetScancodeFromName("RIGHT")]+keystate[sdl.GetScancodeFromName("LEFT")] == 0 {
+	if keystate[sdl.GetScancodeFromName("RIGHT")]+
+		keystate[sdl.GetScancodeFromName("LEFT")] == 0 {
 		gd.Ply.SetDirection(STOP)
 	}
 	if keystate[sdl.GetScancodeFromName("SPACE")] == 1 {

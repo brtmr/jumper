@@ -38,5 +38,13 @@
     "height"        :   27,
     "offset_x"      :   48,
     "offset_y"      :   0 
+    },
+    {
+    "id_string"     :   "sky",
+    "file"          :   "sky.png",
+    "width"         :   1,
+    "height"        :   10,
+    "offset_x"      :   0,
+    "offset_y"      :   0 
     }
 ]

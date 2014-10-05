@@ -6,24 +6,35 @@ import (
 )
 
 type Level struct {
-	Tiles    [][]Tile
-	Cam      Camera
+	tiles    [][]Tile
+	camera   *Camera
 	Renderer *sdl.Renderer
+	dimx     int
+	dimy     int
 }
 
 const Tile_size = 16 * SCALE
 
 type Tile struct {
-	Sprite Sprite
-	Health int
-	Solid  bool
+	sprite Sprite
+	health int
+	solid  bool
 }
 
-func DummyLevel(spr SpriteManager, renderer *sdl.Renderer) Level {
-	tiles := make([][]Tile, 200, 200)
-	for i := 0; i < 200; i++ {
-		r := make([]Tile, 200, 200)
-		for j := 0; j < 200; j++ {
+func (t Tile) Sprite() Sprite {
+	return t.sprite
+}
+
+func (t Tile) Solid() bool {
+	return t.solid
+}
+
+func DummyLevel(spr SpriteManager, renderer *sdl.Renderer, cam *Camera) Level {
+	lsize := 20
+	tiles := make([][]Tile, lsize, lsize)
+	for i := 0; i < lsize; i++ {
+		r := make([]Tile, lsize, lsize)
+		for j := 0; j < lsize; j++ {
 			var tl Tile
 			var solid bool
 			if i < 9 {
@@ -40,28 +51,36 @@ func DummyLevel(spr SpriteManager, renderer *sdl.Renderer) Level {
 		}
 		tiles[i] = r
 	}
-	return Level{tiles[:][:], Camera{0, 0}, renderer}
-}
-
-type Camera struct {
-	X int32
-	Y int32
+	return Level{tiles[:][:], cam, renderer,
+		lsize, lsize}
 }
 
 func (lvl Level) Draw() {
-	for y, arr := range lvl.Tiles {
+	for y, arr := range lvl.tiles {
 		for x, tl := range arr {
-			if tl.Solid {
-				xpos := int32(x)*Tile_size + lvl.Cam.X
-				ypos := int32(y)*Tile_size + lvl.Cam.Y
+			if tl.Solid() {
+				xpos := int32(x)*Tile_size + lvl.camera.X()
+				ypos := int32(y)*Tile_size + lvl.camera.Y()
 				dstRec := sdl.Rect{xpos, ypos, Tile_size, Tile_size}
-				lvl.Renderer.Copy(tl.Sprite.Texture, tl.Sprite.Rect, &dstRec)
+				lvl.Renderer.Copy(tl.Sprite().Texture, tl.Sprite().Rect,
+					&dstRec)
 			}
 		}
 	}
 }
 
-func (lvl Level) IsSolid(i, j int32) bool {
+func (lvl Level) IsSolid(i, j int) bool {
 	_ = fmt.Println
-	return lvl.Tiles[i][j].Solid
+	if i >= lvl.dimy || j >= lvl.dimy {
+		return false
+	}
+	return lvl.tiles[i][j].Solid()
+}
+
+func (lvl Level) DimX() int {
+	return lvl.dimx * Tile_size
+}
+
+func (lvl Level) DimY() int {
+	return lvl.dimy * Tile_size
 }
