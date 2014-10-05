@@ -99,6 +99,14 @@ func (p *Player) Update() {
 			p.Collide(i, j)
 		}
 	}
+	if p.IHitMyHead() {
+		p.currentPos.SetVelY(0)
+		fmt.Println("thump")
+	}
+	if p.ILanded() {
+		p.currentPos.SetVelY(0)
+		p.jumping = false
+	}
 }
 
 func (p *Player) Collide(i, j int32) {
@@ -108,12 +116,6 @@ func (p *Player) Collide(i, j int32) {
 			sdl.Rect{j * Tile_size, i * Tile_size, Tile_size, Tile_size})
 		if x != 0 {
 			p.currentPos.SetVelX(0)
-		}
-		if y != 0 {
-			p.currentPos.SetVelY(0)
-		}
-		if y < 0 {
-			p.jumping = false
 		}
 		p.currentPos.SetX(p.currentPos.X() + x)
 		p.currentPos.SetY(p.currentPos.Y() + y)
@@ -176,15 +178,26 @@ func (p Player) SolidGround() bool {
 }
 
 func (p Player) IHitMyHead() bool {
-	j := int(p.currentPos.X() / Tile_size)
+	j := int((p.currentPos.X() + 1) / Tile_size)
 	i := int((p.currentPos.Y() - 1) / Tile_size)
 	if p.level.IsSolid(i, j) {
-		fmt.Printf("ouch.left. %d#%d \n", i, j)
 		return true
 	}
-	j = int((p.currentPos.X() + p.w) / Tile_size)
+	j = int((p.currentPos.X() + p.w - 1) / Tile_size)
 	if p.level.IsSolid(i, j) {
-		fmt.Printf("ouch.right. %d#%d \n", i, j)
+		return true
+	}
+	return false
+}
+
+func (p Player) ILanded() bool {
+	j := int((p.currentPos.X() + 1) / Tile_size)
+	i := int((p.currentPos.Y() + p.h + 1) / Tile_size)
+	if p.level.IsSolid(i, j) {
+		return true
+	}
+	j = int((p.currentPos.X() + p.w - 1) / Tile_size)
+	if p.level.IsSolid(i, j) {
 		return true
 	}
 	return false
