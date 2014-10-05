@@ -170,3 +170,19 @@ func (p *Player) SetCamera() {
 		p.camera.SetY(p.drawPos.Y() - HALF_SCREEN_HEIGHT)
 	}
 }
+
+func (p Player) SolidGround() bool {
+}
+
+func (p Player) IHitMyHead() bool {
+	j := p.currentPos.X() / Tile_size
+	i := (p.currentPos.Y() - 1) / Tile_size
+	if p.level.IsSolid(i, j) {
+		return true
+	}
+	j = (p.currentPos.X() + p.w) / Tile_size
+	if p.level.IsSolid(i, j) {
+		return true
+	}
+	return false
+}
