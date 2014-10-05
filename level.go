@@ -51,6 +51,24 @@ func DummyLevel(spr SpriteManager, renderer *sdl.Renderer, cam *Camera) Level {
 		}
 		tiles[i] = r
 	}
+
+	tiles[4][5] = Tile{spr.GetSprite("tile_stone"), 100, true}
+	tiles[4][6] = Tile{spr.GetSprite("tile_stone"), 100, true}
+	tiles[4][7] = Tile{spr.GetSprite("tile_stone"), 100, true}
+	tiles[5][5] = Tile{spr.GetSprite("tile_stone"), 100, true}
+	tiles[5][6] = Tile{spr.GetSprite("tile_stone"), 100, true}
+	tiles[5][7] = Tile{spr.GetSprite("tile_stone"), 100, true}
+	tiles[6][5] = Tile{spr.GetSprite("tile_stone"), 100, true}
+	tiles[6][6] = Tile{spr.GetSprite("tile_stone"), 100, true}
+	tiles[6][7] = Tile{spr.GetSprite("tile_stone"), 100, true}
+
+	tiles[6][10] = Tile{spr.GetSprite("tile_stone"), 100, true}
+	tiles[6][11] = Tile{spr.GetSprite("tile_stone"), 100, true}
+	tiles[6][12] = Tile{spr.GetSprite("tile_stone"), 100, true}
+
+	for i := 0; i < 10; i++ {
+		tiles[i][19] = Tile{spr.GetSprite("tile_stone"), 100, true}
+	}
 	return Level{tiles[:][:], cam, renderer,
 		lsize, lsize}
 }

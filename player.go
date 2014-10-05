@@ -99,8 +99,6 @@ func (p *Player) Update() {
 			p.Collide(i, j)
 		}
 	}
-
-	//fmt.Printf("current velocity: x %.2f y %.2f\n", p.currentPos.GetVelX(), p.currentPos.GetVelY())
 }
 
 func (p *Player) Collide(i, j int32) {

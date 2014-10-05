@@ -20,10 +20,11 @@ const HALF_SCREEN_WIDTH = SCREEN_WIDTH / 2
 const HALF_SCREEN_HEIGHT = SCREEN_HEIGHT / 2
 
 type GameData struct {
-	Spr      SpriteManager
-	Lvl      Level
-	Ply      Player
-	renderer *sdl.Renderer
+	Spr           SpriteManager
+	Lvl           Level
+	Ply           Player
+	renderer      *sdl.Renderer
+	spaceReleased bool
 }
 
 type GameObject interface {
@@ -128,7 +129,7 @@ func Game_Init(renderer *sdl.Renderer) GameData {
 	cam := Camera{0, 0}
 	lvl := DummyLevel(spr, renderer, &cam)
 	ply := Init_player(spr, renderer, &lvl, &cam)
-	return GameData{spr, lvl, ply, renderer}
+	return GameData{spr, lvl, ply, renderer, true}
 }
 
 func (gd *GameData) Draw() {
@@ -164,8 +165,14 @@ func (gd *GameData) handleKeys() {
 		keystate[sdl.GetScancodeFromName("LEFT")] == 0 {
 		gd.Ply.SetDirection(STOP)
 	}
+	if keystate[sdl.GetScancodeFromName("SPACE")] == 0 {
+		gd.spaceReleased = true
+	}
 	if keystate[sdl.GetScancodeFromName("SPACE")] == 1 {
-		gd.Ply.Jump()
+		if gd.spaceReleased {
+			gd.Ply.Jump()
+		}
+		gd.spaceReleased = false
 	}
 
 }

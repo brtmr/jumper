@@ -82,6 +82,7 @@ func (p Position) Update() Position {
 	}
 	if y < 0 {
 		y = 0
+		vel_y = 0
 	}
 	if y > p.max_y {
 		y = p.max_y
