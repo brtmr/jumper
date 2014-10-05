@@ -16,6 +16,8 @@ const GRAVITY = SCALE * 0.6
 const TOPSPEED = SCALE * 8
 const SCREEN_WIDTH = 800
 const SCREEN_HEIGHT = 600
+const HALF_SCREEN_WIDTH = SCREEN_WIDTH / 2
+const HALF_SCREEN_HEIGHT = SCREEN_HEIGHT / 2
 
 type GameData struct {
 	Spr      SpriteManager
@@ -96,7 +98,7 @@ func main() {
 		}
 
 		alpha := accumulator / dt
-		gd.Ply.Interpolate(alpha)
+		gd.Interpolate(alpha)
 
 		gd.Draw()
 		/*
@@ -125,7 +127,7 @@ func Game_Init(renderer *sdl.Renderer) GameData {
 	spr := Init_from_json(GetDataPath()+"sprites.json", renderer)
 	cam := Camera{0, 0}
 	lvl := DummyLevel(spr, renderer, &cam)
-	ply := Init_player(spr, renderer, lvl, &cam)
+	ply := Init_player(spr, renderer, &lvl, &cam)
 	return GameData{spr, lvl, ply, renderer}
 }
 
@@ -143,6 +145,11 @@ func (gd *GameData) Draw() {
 func (gd *GameData) Update() {
 	gd.handleKeys()
 	gd.Ply.Update()
+}
+
+func (gd *GameData) Interpolate(alpha float64) {
+	gd.Ply.Interpolate(alpha)
+	gd.Ply.SetCamera()
 }
 
 func (gd *GameData) handleKeys() {

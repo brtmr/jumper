@@ -12,7 +12,7 @@ type Player struct {
 	sprites     []Sprite
 	renderer    *sdl.Renderer
 	camera      *Camera
-	lvl         Level
+	level       *Level
 	running     bool
 	jumping     bool
 	w           int32
@@ -21,7 +21,7 @@ type Player struct {
 }
 
 func Init_player(spr SpriteManager, renderer *sdl.Renderer,
-	level Level, camera *Camera) Player {
+	level *Level, camera *Camera) Player {
 	sprites := []Sprite{spr.GetSprite("player_anim_0"),
 		spr.GetSprite("player_anim_1"),
 		spr.GetSprite("player_anim_2")}
@@ -46,8 +46,8 @@ func (p *Player) Draw() {
 		i = 2
 	}
 	sprite := p.sprites[i]
-	X := p.drawPos.X()
-	Y := p.drawPos.Y()
+	X := p.drawPos.X() - p.camera.X()
+	Y := p.drawPos.Y() - p.camera.Y()
 	dstRec := sdl.Rect{X, Y, SCALE * sprite.Rect.W, SCALE * sprite.Rect.H}
 	if p.direction == DIRECTION_RIGHT {
 		p.renderer.Copy(sprite.Texture, sprite.Rect, &dstRec)
@@ -104,7 +104,7 @@ func (p *Player) Update() {
 }
 
 func (p *Player) Collide(i, j int32) {
-	if p.lvl.IsSolid(int(i), int(j)) {
+	if p.level.IsSolid(int(i), int(j)) {
 		x, y := getMTV(
 			sdl.Rect{p.currentPos.X(), p.currentPos.Y(), p.w, p.h},
 			sdl.Rect{j * Tile_size, i * Tile_size, Tile_size, Tile_size})
@@ -156,5 +156,19 @@ func (p *Player) Interpolate(alpha float64) {
 	p.drawPos = InterpolatePos(p.currentPos, p.previousPos, alpha)
 }
 
-func (p *Player) setCamera() {
+func (p *Player) SetCamera() {
+	if p.drawPos.X() < HALF_SCREEN_WIDTH {
+		p.camera.SetX(0)
+	} else if int(p.drawPos.X()) > p.level.DimX()-HALF_SCREEN_WIDTH {
+		p.camera.SetX(int32(p.level.DimX() - SCREEN_WIDTH))
+	} else {
+		p.camera.SetX(p.drawPos.X() - HALF_SCREEN_WIDTH)
+	}
+	if p.drawPos.Y() < HALF_SCREEN_HEIGHT {
+		p.camera.SetY(0)
+	} else if int(p.drawPos.Y()) > p.level.DimY()-HALF_SCREEN_HEIGHT {
+		p.camera.SetY(int32(p.level.DimY() - SCREEN_HEIGHT))
+	} else {
+		p.camera.SetY(p.drawPos.Y() - HALF_SCREEN_HEIGHT)
+	}
 }

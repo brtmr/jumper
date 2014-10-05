@@ -59,8 +59,8 @@ func (lvl Level) Draw() {
 	for y, arr := range lvl.tiles {
 		for x, tl := range arr {
 			if tl.Solid() {
-				xpos := int32(x)*Tile_size + lvl.camera.X()
-				ypos := int32(y)*Tile_size + lvl.camera.Y()
+				xpos := int32(x)*Tile_size - lvl.camera.X()
+				ypos := int32(y)*Tile_size - lvl.camera.Y()
 				dstRec := sdl.Rect{xpos, ypos, Tile_size, Tile_size}
 				lvl.Renderer.Copy(tl.Sprite().Texture, tl.Sprite().Rect,
 					&dstRec)
