@@ -70,12 +70,16 @@ func main() {
 
 	gd := Game_Init(renderer)
 
-	dt := 0.03
-	accumulator := 0.0
+	currentTime := sdl.GetTicks()
 
-	currentTime := float64(sdl.GetTicks()) / 1000.0
+	var frameTime uint32
+	var accumulator uint32
+	var dt uint32
+	var alpha float64
 
-	frameTime := 0.0
+	dt = 33 //time for a single logic frame.
+
+	var rendertime uint32
 
 	for {
 		/*
@@ -83,10 +87,10 @@ func main() {
 			implemented as described in
 			http://gafferongames.com/game-physics/fix-your-timestep/
 		*/
-		newTime := float64(sdl.GetTicks()) / 1000.0
+		newTime := sdl.GetTicks()
 		frameTime = newTime - currentTime
-		if frameTime > 0.25 {
-			frameTime = 0.25
+		if frameTime > 250 {
+			frameTime = 250
 		}
 		currentTime = newTime
 		accumulator += frameTime
@@ -98,10 +102,14 @@ func main() {
 			accumulator -= dt
 		}
 
-		alpha := accumulator / dt
+		alpha = float64(accumulator) / float64(dt)
 		gd.Interpolate(alpha)
 
+		rendertime = sdl.GetTicks()
 		gd.Draw()
+		rendertime = sdl.GetTicks() - rendertime
+		fmt.Printf("Rendertime: %d \n", rendertime)
+
 		/*
 			end mainloop
 		*/

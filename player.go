@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	//	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -99,9 +99,13 @@ func (p *Player) Update() {
 			p.Collide(i, j)
 		}
 	}
+	for i := top_y_index; i <= bottom_y_index; i++ {
+		for j := left_x_index; j <= right_x_index; j++ {
+			p.Collide(i, j)
+		}
+	}
 	if p.IHitMyHead() {
 		p.currentPos.SetVelY(0)
-		fmt.Println("thump")
 	}
 	if p.ILanded() {
 		p.currentPos.SetVelY(0)
@@ -178,6 +182,9 @@ func (p Player) SolidGround() bool {
 }
 
 func (p Player) IHitMyHead() bool {
+	if p.currentPos.VelY() > 0 {
+		return false
+	}
 	j := int((p.currentPos.X() + 1) / Tile_size)
 	i := int((p.currentPos.Y() - 1) / Tile_size)
 	if p.level.IsSolid(i, j) {
@@ -191,6 +198,9 @@ func (p Player) IHitMyHead() bool {
 }
 
 func (p Player) ILanded() bool {
+	if p.currentPos.VelY() < 0 {
+		return false
+	}
 	j := int((p.currentPos.X() + 1) / Tile_size)
 	i := int((p.currentPos.Y() + p.h + 1) / Tile_size)
 	if p.level.IsSolid(i, j) {
