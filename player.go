@@ -96,12 +96,12 @@ func (p *Player) Update() {
 
 	for i := top_y_index; i <= bottom_y_index; i++ {
 		for j := left_x_index; j <= right_x_index; j++ {
-			p.Collide(i, j)
+			p.CollideX(i, j)
 		}
 	}
 	for i := top_y_index; i <= bottom_y_index; i++ {
 		for j := left_x_index; j <= right_x_index; j++ {
-			p.Collide(i, j)
+			p.CollideY(i, j)
 		}
 	}
 	if p.IHitMyHead() {
@@ -113,15 +113,23 @@ func (p *Player) Update() {
 	}
 }
 
-func (p *Player) Collide(i, j int32) {
+func (p *Player) CollideX(i, j int32) {
 	if p.level.IsSolid(int(i), int(j)) {
-		x, y := getMTV(
+		x, _ := getMTV(
 			sdl.Rect{p.currentPos.X(), p.currentPos.Y(), p.w, p.h},
 			sdl.Rect{j * Tile_size, i * Tile_size, Tile_size, Tile_size})
 		if x != 0 {
 			p.currentPos.SetVelX(0)
 		}
 		p.currentPos.SetX(p.currentPos.X() + x)
+	}
+}
+
+func (p *Player) CollideY(i, j int32) {
+	if p.level.IsSolid(int(i), int(j)) {
+		_, y := getMTV(
+			sdl.Rect{p.currentPos.X(), p.currentPos.Y(), p.w, p.h},
+			sdl.Rect{j * Tile_size, i * Tile_size, Tile_size, Tile_size})
 		p.currentPos.SetY(p.currentPos.Y() + y)
 	}
 }
