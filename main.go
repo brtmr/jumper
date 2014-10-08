@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-const SCALE = 3
+const SCALE = 4
 const DIRECTION_RIGHT = 0
 const DIRECTION_LEFT = 1
 const STOP = -1
@@ -15,13 +15,13 @@ const RUNSPEED = SCALE * 5
 const JUMPSPEED = -(SCALE * 8)
 const GRAVITY = SCALE * 0.6
 const TOPSPEED = SCALE * 8
-const SCREEN_WIDTH = 800
-const SCREEN_HEIGHT = 600
+const SCREEN_WIDTH = 1024
+const SCREEN_HEIGHT = 768
 const HALF_SCREEN_WIDTH = SCREEN_WIDTH / 2
 const HALF_SCREEN_HEIGHT = SCREEN_HEIGHT / 2
 
 type GameData struct {
-	Spr      SpriteManager
+	Spr      *SpriteManager
 	Lvl      Level
 	Ply      Player
 	renderer *sdl.Renderer
@@ -43,7 +43,6 @@ type Updater interface {
 }
 
 func main() {
-
 	if 0 != sdl.Init(sdl.INIT_EVERYTHING) {
 		fmt.Fprintf(os.Stderr, "Failed to initialize SDL: %s\n", sdl.GetError())
 		os.Exit(2)
@@ -104,7 +103,10 @@ func main() {
 		alpha = float64(accumulator) / float64(dt)
 		gd.Interpolate(alpha)
 
-		gd.Draw()
+		fps := fmt.Sprintf("FPS : %.2f \n", 1000.0/float64(frameTime))
+		fps = fps + "  ELAPSED GAMETIME: "
+		fps = fps + fmt.Sprintf("%d", currentTime/1000)
+		gd.Draw(fps)
 
 		/*
 			end mainloop
@@ -113,7 +115,6 @@ func main() {
 		if gd.gameOver {
 			break
 		}
-		fmt.Printf("Time since init: %d \n", sdl.GetTicks()/1000)
 	}
 	gd.Spr.TearDown()
 	ttf.Quit()
@@ -123,12 +124,12 @@ func main() {
 func Game_Init(renderer *sdl.Renderer) GameData {
 	spr := Init_from_json(GetDataPath()+"sprites.json", renderer)
 	cam := Camera{0, 0}
-	lvl := DummyLevel(spr, renderer, &cam)
-	ply := Init_player(spr, renderer, &lvl, &cam)
-	return GameData{spr, lvl, ply, renderer, false}
+	lvl := DummyLevel(&spr, renderer, &cam)
+	ply := Init_player(&spr, renderer, &lvl, &cam)
+	return GameData{&spr, lvl, ply, renderer, false}
 }
 
-func (gd *GameData) Draw() {
+func (gd *GameData) Draw(fps string) {
 	gd.renderer.Clear()
 	//draw the sky
 	sky := gd.Spr.GetSprite("sky")
@@ -136,6 +137,9 @@ func (gd *GameData) Draw() {
 
 	gd.Lvl.Draw()
 	gd.Ply.Draw()
+
+	DrawBitmapTextAt(gd.renderer, gd.Spr, fps, 50, 50)
+
 	gd.renderer.Present()
 }
 
