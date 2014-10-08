@@ -9,7 +9,7 @@ type Level struct {
 	tiles    [][]Tile
 	camera   *Camera
 	Renderer *sdl.Renderer
-	spr      SpriteManager
+	spr      *SpriteManager
 	//dimension in tiles
 	dimx int
 	dimy int
@@ -31,8 +31,8 @@ func (t Tile) Solid() bool {
 	return t.solid
 }
 
-func DummyLevel(spr SpriteManager, renderer *sdl.Renderer, cam *Camera) Level {
-	lsize := 20
+func DummyLevel(spr *SpriteManager, renderer *sdl.Renderer, cam *Camera) Level {
+	lsize := 40
 	tiles := make([][]Tile, lsize, lsize)
 	for i := 0; i < lsize; i++ {
 		r := make([]Tile, lsize, lsize)
@@ -69,7 +69,7 @@ func DummyLevel(spr SpriteManager, renderer *sdl.Renderer, cam *Camera) Level {
 	tiles[6][12] = Tile{spr.GetSprite("tile_stone"), 100, true}
 
 	for i := 0; i < 10; i++ {
-		tiles[i][19] = Tile{spr.GetSprite("tile_stone"), 100, true}
+		tiles[i][lsize-1] = Tile{spr.GetSprite("tile_stone"), 100, true}
 	}
 	return Level{tiles[:][:], cam, renderer, spr, lsize, lsize}
 }
@@ -95,11 +95,13 @@ func (lvl Level) Draw() {
 				lvl.Renderer.Copy(tl.Sprite().Texture, tl.Sprite().Rect,
 					&dstRec)
 			}
-			lvl.Renderer.SetDrawColor(255, 0, 0, 255)
-			lvl.Renderer.DrawRect(&dstRec)
-			font := lvl.spr.GetFont("LiberationMono5")
-			text := fmt.Sprintf("%02d,%02d", y, x)
-			DrawTextAt(font, text, xpos+2, ypos+2, lvl.Renderer)
+			/*
+				lvl.Renderer.SetDrawColor(254, 0, 0, 255)
+				lvl.Renderer.DrawRect(&dstRec)
+				font := lvl.spr.GetFont("LiberationMono5")
+				text := fmt.Sprintf("%02d,%02d", y, x)
+				DrawTextAt(font, text, xpos+2, ypos+2, lvl.Renderer)
+			*/
 		}
 	}
 }

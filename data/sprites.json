@@ -510,5 +510,85 @@
     "height"        :   7,
     "offset_x"      :   30,
     "Offset_y"      :   28    
+    },
+    {
+    "id_string"     :   "0",
+    "file"          :   "pxnumbers.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   0,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "1",
+    "file"          :   "pxnumbers.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   6,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "2",
+    "file"          :   "pxnumbers.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   12,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "3",
+    "file"          :   "pxnumbers.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   18,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "4",
+    "file"          :   "pxnumbers.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   24,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "5",
+    "file"          :   "pxnumbers.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   30,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "6",
+    "file"          :   "pxnumbers.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   36,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "7",
+    "file"          :   "pxnumbers.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   42,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "8",
+    "file"          :   "pxnumbers.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   48,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "9",
+    "file"          :   "pxnumbers.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   54,
+    "Offset_y"      :   0    
     }
 ]

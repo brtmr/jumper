@@ -20,7 +20,7 @@ type Player struct {
 	direction   int
 }
 
-func Init_player(spr SpriteManager, renderer *sdl.Renderer,
+func Init_player(spr *SpriteManager, renderer *sdl.Renderer,
 	level *Level, camera *Camera) Player {
 	sprites := []Sprite{spr.GetSprite("player_anim_0"),
 		spr.GetSprite("player_anim_1"),
@@ -79,7 +79,6 @@ func (p *Player) SetDirection(direction int) {
 func (p *Player) Jump() {
 	if !p.jumping {
 		p.currentPos.SetVelY(JUMPSPEED)
-		p.jumping = true
 	}
 }
 
@@ -110,6 +109,8 @@ func (p *Player) Update() {
 	if p.ILanded() {
 		p.currentPos.SetVelY(0)
 		p.jumping = false
+	} else {
+		p.jumping = true
 	}
 }
 
