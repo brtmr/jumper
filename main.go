@@ -61,7 +61,8 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", sdl.GetError())
 		os.Exit(2)
 	}
-	renderer := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
+	renderer := sdl.CreateRenderer(window, -1,
+		sdl.RENDERER_ACCELERATED|sdl.RENDERER_PRESENTVSYNC)
 	if renderer == nil {
 		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n",
 			sdl.GetError())
@@ -78,8 +79,6 @@ func main() {
 	var alpha float64
 
 	dt = 33 //time for a single logic frame.
-
-	var rendertime uint32
 
 	for {
 		/*
@@ -105,10 +104,7 @@ func main() {
 		alpha = float64(accumulator) / float64(dt)
 		gd.Interpolate(alpha)
 
-		rendertime = sdl.GetTicks()
 		gd.Draw()
-		rendertime = sdl.GetTicks() - rendertime
-		fmt.Printf("Rendertime: %d \n", rendertime)
 
 		/*
 			end mainloop
@@ -117,6 +113,7 @@ func main() {
 		if gd.gameOver {
 			break
 		}
+		fmt.Printf("Time since init: %d \n", sdl.GetTicks()/1000)
 	}
 	gd.Spr.TearDown()
 	ttf.Quit()
@@ -180,6 +177,7 @@ func (gd *GameData) handleKeyUp(sym sdl.Keysym) {
 }
 
 func (gd *GameData) handleEvents() {
+	sdl.PumpEvents()
 	var event sdl.Event
 	for event = sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 		switch t := event.(type) {
