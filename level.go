@@ -95,13 +95,13 @@ func (lvl Level) Draw() {
 				lvl.Renderer.Copy(tl.Sprite().Texture, tl.Sprite().Rect,
 					&dstRec)
 			}
-			/*
+			if DRAW_DEBUG {
 				lvl.Renderer.SetDrawColor(254, 0, 0, 255)
 				lvl.Renderer.DrawRect(&dstRec)
 				font := lvl.spr.GetFont("LiberationMono5")
 				text := fmt.Sprintf("%02d,%02d", y, x)
 				DrawTextAt(font, text, xpos+2, ypos+2, lvl.Renderer)
-			*/
+			}
 		}
 	}
 }

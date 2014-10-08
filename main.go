@@ -7,6 +7,9 @@ import (
 	"os"
 )
 
+const VSYNC = false
+const DRAW_DEBUG = true
+
 const SCALE = 4
 const DIRECTION_RIGHT = 0
 const DIRECTION_LEFT = 1
@@ -48,11 +51,6 @@ func main() {
 		os.Exit(2)
 	}
 	ttf.Init()
-	/*
-		        window := sdl.CreateWindow("goplot", sdl.WINDOWPOS_UNDEFINED,
-		            sdl.WINDOWPOS_UNDEFINED,
-					1600, 900, sdl.WINDOW_SHOWN|sdl.WINDOW_FULLSCREEN)
-	*/
 	window := sdl.CreateWindow("jumper", sdl.WINDOWPOS_UNDEFINED,
 		sdl.WINDOWPOS_UNDEFINED,
 		SCREEN_WIDTH, SCREEN_HEIGHT, sdl.WINDOW_SHOWN)
@@ -60,8 +58,13 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", sdl.GetError())
 		os.Exit(2)
 	}
-	renderer := sdl.CreateRenderer(window, -1,
-		sdl.RENDERER_ACCELERATED|sdl.RENDERER_PRESENTVSYNC)
+	var renderflags uint32
+	if VSYNC {
+		renderflags = sdl.RENDERER_ACCELERATED | sdl.RENDERER_PRESENTVSYNC
+	} else {
+		renderflags = sdl.RENDERER_ACCELERATED
+	}
+	renderer := sdl.CreateRenderer(window, -1, renderflags)
 	if renderer == nil {
 		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n",
 			sdl.GetError())
