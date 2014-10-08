@@ -46,5 +46,469 @@
     "height"        :   10,
     "offset_x"      :   0,
     "offset_y"      :   0 
+    },
+    {
+    "id_string"     :   "A",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   0,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "B",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   6,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "C",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   12,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "D",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   18,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "E",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   24,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "F",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   30,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "G",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   36,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "H",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   42,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "I",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   48,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "J",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   54,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "K",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   60,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "L",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   66,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "M",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   72,
+    "Offset_y"      :   0    
+    },
+    {
+    "id_string"     :   "N",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   0,
+    "Offset_y"      :   7    
+    },
+    {
+    "id_string"     :   "O",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   6,
+    "Offset_y"      :   7    
+    },
+    {
+    "id_string"     :   "P",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   12,
+    "Offset_y"      :   7    
+    },
+    {
+    "id_string"     :   "Q",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   18,
+    "Offset_y"      :   7    
+    },
+    {
+    "id_string"     :   "R",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   24,
+    "Offset_y"      :   7    
+    },
+    {
+    "id_string"     :   "S",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   30,
+    "Offset_y"      :   7    
+    },
+    {
+    "id_string"     :   "T",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   36,
+    "Offset_y"      :   7    
+    },
+    {
+    "id_string"     :   "U",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   42,
+    "Offset_y"      :   7    
+    },
+    {
+    "id_string"     :   "V",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   48,
+    "Offset_y"      :   7    
+    },
+    {
+    "id_string"     :   "W",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   54,
+    "Offset_y"      :   7    
+    },
+    {
+    "id_string"     :   "X",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   60,
+    "Offset_y"      :   7    
+    },
+    {
+    "id_string"     :   "Y",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   66,
+    "Offset_y"      :   7    
+    },
+    {
+    "id_string"     :   "Z",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   72,
+    "Offset_y"      :   7    
+    },
+    {
+    "id_string"     :   "a",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   0,
+    "Offset_y"      :   14    
+    },
+    {
+    "id_string"     :   "b",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   6,
+    "Offset_y"      :   14    
+    },
+    {
+    "id_string"     :   "c",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   12,
+    "Offset_y"      :   14    
+    },
+    {
+    "id_string"     :   "d",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   18,
+    "Offset_y"      :   14    
+    },
+    {
+    "id_string"     :   "e",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   24,
+    "Offset_y"      :   14    
+    },
+    {
+    "id_string"     :   "f",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   30,
+    "Offset_y"      :   14    
+    },
+    {
+    "id_string"     :   "g",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   36,
+    "Offset_y"      :   14    
+    },
+    {
+    "id_string"     :   "h",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   42,
+    "Offset_y"      :   14    
+    },
+    {
+    "id_string"     :   "i",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   48,
+    "Offset_y"      :   14    
+    },
+    {
+    "id_string"     :   "j",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   54,
+    "Offset_y"      :   14    
+    },
+    {
+    "id_string"     :   "k",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   60,
+    "Offset_y"      :   14    
+    },
+    {
+    "id_string"     :   "l",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   66,
+    "Offset_y"      :   14    
+    },
+    {
+    "id_string"     :   "m",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   72,
+    "Offset_y"      :   14    
+    },
+    {
+    "id_string"     :   "n",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   0,
+    "Offset_y"      :   21    
+    },
+    {
+    "id_string"     :   "o",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   6,
+    "Offset_y"      :   21    
+    },
+    {
+    "id_string"     :   "p",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   12,
+    "Offset_y"      :   21    
+    },
+    {
+    "id_string"     :   "q",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   18,
+    "Offset_y"      :   21    
+    },
+    {
+    "id_string"     :   "r",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   24,
+    "Offset_y"      :   21    
+    },
+    {
+    "id_string"     :   "s",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   30,
+    "Offset_y"      :   21    
+    },
+    {
+    "id_string"     :   "t",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   36,
+    "Offset_y"      :   21    
+    },
+    {
+    "id_string"     :   "u",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   42,
+    "Offset_y"      :   21    
+    },
+    {
+    "id_string"     :   "v",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   48,
+    "Offset_y"      :   21    
+    },
+    {
+    "id_string"     :   "w",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   54,
+    "Offset_y"      :   21    
+    },
+    {
+    "id_string"     :   "x",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   60,
+    "Offset_y"      :   21    
+    },
+    {
+    "id_string"     :   "y",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   66,
+    "Offset_y"      :   21    
+    },
+    {
+    "id_string"     :   "z",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   72,
+    "Offset_y"      :   21    
+    },
+    {
+    "id_string"     :   " ",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   0,
+    "Offset_y"      :   28    
+    },
+    {
+    "id_string"     :   ".",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   6,
+    "Offset_y"      :   28    
+    },
+    {
+    "id_string"     :   ",",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   12,
+    "Offset_y"      :   28    
+    },
+    {
+    "id_string"     :   ";",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   18,
+    "Offset_y"      :   28    
+    },
+    {
+    "id_string"     :   ":",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   24,
+    "Offset_y"      :   28    
+    },
+    {
+    "id_string"     :   "!",
+    "file"          :   "pxfont.png",
+    "width"         :   6,
+    "height"        :   7,
+    "offset_x"      :   30,
+    "Offset_y"      :   28    
     }
 ]
