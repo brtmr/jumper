@@ -10,7 +10,7 @@ import (
 const VSYNC = true
 const DRAW_DEBUG = false
 
-const SCALE = 2
+const SCALE = 3
 const DIRECTION_RIGHT = 0
 const DIRECTION_LEFT = 1
 const STOP = -1
@@ -22,6 +22,7 @@ const SCREEN_WIDTH = 1024
 const SCREEN_HEIGHT = 768
 const HALF_SCREEN_WIDTH = SCREEN_WIDTH / 2
 const HALF_SCREEN_HEIGHT = SCREEN_HEIGHT / 2
+const Tile_size = 16 * SCALE
 
 type GameData struct {
 	Spr      *SpriteManager
@@ -106,7 +107,12 @@ func main() {
 		alpha = float64(accumulator) / float64(dt)
 		gd.Interpolate(alpha)
 
-		fps := fmt.Sprintf("FPS : %.2f \n", 1000.0/float64(frameTime))
+		var fps string
+		if frameTime > 1 {
+			fps = fmt.Sprintf("FPS : %.2f", 1000.0/float64(frameTime))
+		} else {
+			fps = "FPS : 00"
+		}
 		fps = fps + "  ELAPSED GAMETIME: "
 		fps = fps + fmt.Sprintf("%d", currentTime/1000)
 		gd.Draw(fps)
@@ -127,7 +133,9 @@ func main() {
 func Game_Init(renderer *sdl.Renderer) GameData {
 	spr := Init_from_json(GetDataPath()+"sprites.json", renderer)
 	cam := Camera{0, 0}
-	lvl := DummyLevel(&spr, renderer, &cam)
+	tc := InitTileCreator(&spr)
+	lvl := genLevel(&tc, &cam, renderer,
+		&spr)
 	ply := Init_player(&spr, renderer, &lvl, &cam)
 	return GameData{&spr, lvl, ply, renderer, false}
 }

@@ -7,8 +7,6 @@ import (
 	"io/ioutil"
 )
 
-const Tile_size = 16 * SCALE
-
 type Tile struct {
 	sprite Sprite
 	health int
@@ -29,8 +27,9 @@ func (t Tile) Solid() bool {
  */
 
 type TileCreator struct {
-	tlmap map[string]*Tile
-	idmap map[int]string
+	prototypemap map[string]JSON_prototype
+	idmap        map[int]string
+	spr          *SpriteManager
 }
 
 func InitTileCreator(spr *SpriteManager) TileCreator {
@@ -46,19 +45,17 @@ func InitTileCreator(spr *SpriteManager) TileCreator {
 		panic(err)
 	}
 
-	tlmap := make(map[string]*Tile)
+	prototypemap := make(map[string]JSON_prototype)
 	idmap := make(map[int]string)
 
 	for _, prototype := range json_data_arr {
-		sprite := spr.GetSprite(prototype.Name)
-		tl := Tile{sprite, prototype.Health, prototype.Solid}
-		if _, contains := tlmap[prototype.Name]; contains {
+		if _, contains := prototypemap[prototype.Name]; contains {
 			errstr := fmt.Sprintf("%s is not a unique tile name, please check tile.json",
 				prototype.Name)
 			err := errors.New(errstr)
 			panic(err)
 		}
-		tlmap[prototype.Name] = &tl
+		prototypemap[prototype.Name] = prototype
 		if _, contains := idmap[prototype.Id]; contains {
 			errstr := fmt.Sprintf("%d is not a unique tile id, please check tile.json",
 				prototype.Id)
@@ -68,17 +65,37 @@ func InitTileCreator(spr *SpriteManager) TileCreator {
 		idmap[prototype.Id] = prototype.Name
 	}
 
-	return TileCreator{tlmap, idmap}
+	return TileCreator{prototypemap, idmap, spr}
+}
+
+func (tc TileCreator) tileFromPrototype(prototype JSON_prototype) Tile {
+	sprite := tc.spr.GetSprite(prototype.Sprite)
+	return Tile{sprite, prototype.Health, prototype.Solid}
 }
 
 /* for programmatically creating levels */
-func TileFromPrototypeByName(protoname string) *Tile {
-	return nil //TODO
+func (tc TileCreator) TileByName(protoname string) Tile {
+	if prototype, contains := tc.prototypemap[protoname]; contains {
+		return tc.tileFromPrototype(prototype)
+	} else {
+		errstr := fmt.Sprintf("TileCreator: requested prototype %s does not exist\n",
+			protoname)
+		err := errors.New(errstr)
+		panic(err)
+	}
 }
 
 /* for loading tiles from a file */
-func TileFromPrototypeById(id int) *Tile {
-	return nil //TODO
+func (tc TileCreator) TileById(id int) Tile {
+	if protoname, contains := tc.idmap[id]; contains {
+		return tc.TileByName(protoname)
+	} else {
+		errstr := fmt.Sprintf("TileCreator: requested id %d does not exist\n",
+			id)
+		err := errors.New(errstr)
+		panic(err)
+	}
+
 }
 
 type JSON_prototype struct {

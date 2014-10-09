@@ -7,7 +7,7 @@ import (
 )
 
 type Level struct {
-	tiles    [][]Tile
+	tiles    [MAPHEIGHT][MAPWIDTH]Tile
 	camera   *Camera
 	Renderer *sdl.Renderer
 	spr      *SpriteManager
@@ -16,22 +16,7 @@ type Level struct {
 	dimy int
 }
 
-const Tile_size = 16 * SCALE
-
-type Tile struct {
-	sprite Sprite
-	health int
-	solid  bool
-}
-
-func (t Tile) Sprite() Sprite {
-	return t.sprite
-}
-
-func (t Tile) Solid() bool {
-	return t.solid
-}
-
+/*
 func DummyLevel(spr *SpriteManager, renderer *sdl.Renderer, cam *Camera) Level {
 	lsize := 40
 	tiles := make([][]Tile, lsize, lsize)
@@ -70,6 +55,7 @@ func DummyLevel(spr *SpriteManager, renderer *sdl.Renderer, cam *Camera) Level {
 	}
 	return Level{tiles[:][:], cam, renderer, spr, lsize, lsize}
 }
+*/
 
 func RandomTile(spr *SpriteManager, solid bool) Tile {
 	var tl Tile
@@ -112,8 +98,7 @@ func (lvl Level) Draw() {
 			ypos := int32(y)*Tile_size - lvl.camera.Y()
 			dstRec := sdl.Rect{xpos, ypos, Tile_size, Tile_size}
 			if tl.Solid() {
-				lvl.Renderer.Copy(tl.Sprite().Texture, tl.Sprite().Rect,
-					&dstRec)
+				lvl.Renderer.Copy(tl.Sprite().Texture, tl.Sprite().Rect, &dstRec)
 			}
 			if DRAW_DEBUG {
 				lvl.Renderer.SetDrawColor(254, 0, 0, 255)
@@ -129,7 +114,7 @@ func (lvl Level) Draw() {
 
 func (lvl Level) IsSolid(i, j int) bool {
 	_ = fmt.Println
-	if i >= lvl.dimy || j >= lvl.dimy {
+	if i >= lvl.dimy || j >= lvl.dimx {
 		return false
 	}
 	return lvl.tiles[i][j].Solid()

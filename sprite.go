@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/sdl_image"
@@ -37,7 +38,14 @@ type SpriteManager struct {
 
 //methods
 func (spr SpriteManager) GetSprite(id string) Sprite {
-	return spr.sprmap[id]
+	sprite, contains := spr.sprmap[id]
+	if !contains && id != "" {
+		errstr := fmt.Sprintf("SpriteManager: requested sprite %s does not exist\n",
+			id)
+		err := errors.New(errstr)
+		panic(err)
+	}
+	return sprite
 }
 
 func (spr SpriteManager) GetFont(id string) *ttf.Font {
