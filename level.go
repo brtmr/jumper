@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
+	"math/rand"
 )
 
 type Level struct {
@@ -44,17 +45,13 @@ func DummyLevel(spr *SpriteManager, renderer *sdl.Renderer, cam *Camera) Level {
 			} else {
 				solid = true
 			}
-			if i%2 == 0 {
-				tl = Tile{spr.GetSprite("tile_stone"), 100, solid}
-			} else {
-				tl = Tile{spr.GetSprite("tile_stone_skull"), 100, solid}
-			}
+			tl = RandomTile(spr, solid)
 			r[j] = tl
 		}
 		tiles[i] = r
 	}
 
-	tiles[4][5] = Tile{spr.GetSprite("tile_stone"), 100, true}
+	tiles[4][5] = RandomTile(spr, true)
 	tiles[4][6] = Tile{spr.GetSprite("tile_stone"), 100, true}
 	tiles[4][7] = Tile{spr.GetSprite("tile_stone"), 100, true}
 	tiles[5][5] = Tile{spr.GetSprite("tile_stone"), 100, true}
@@ -72,6 +69,29 @@ func DummyLevel(spr *SpriteManager, renderer *sdl.Renderer, cam *Camera) Level {
 		tiles[i][lsize-1] = Tile{spr.GetSprite("tile_stone"), 100, true}
 	}
 	return Level{tiles[:][:], cam, renderer, spr, lsize, lsize}
+}
+
+func RandomTile(spr *SpriteManager, solid bool) Tile {
+	var tl Tile
+	ra := rand.Int() % 5
+	switch ra {
+	case 0:
+		tl = Tile{spr.GetSprite("tile_stone"), 100, solid}
+		break
+	case 1:
+		tl = Tile{spr.GetSprite("tile_stone"), 100, solid}
+		break
+	case 2:
+		tl = Tile{spr.GetSprite("tile_stone_skull"), 100, solid}
+		break
+	case 3:
+		tl = Tile{spr.GetSprite("tile_diamond"), 100, solid}
+		break
+	case 4:
+		tl = Tile{spr.GetSprite("tile_gold"), 100, solid}
+		break
+	}
+	return tl
 }
 
 func (lvl Level) Draw() {
@@ -98,9 +118,10 @@ func (lvl Level) Draw() {
 			if DRAW_DEBUG {
 				lvl.Renderer.SetDrawColor(254, 0, 0, 255)
 				lvl.Renderer.DrawRect(&dstRec)
-				font := lvl.spr.GetFont("LiberationMono5")
+				//font := lvl.spr.GetFont("LiberationMono5")
 				text := fmt.Sprintf("%02d,%02d", y, x)
-				DrawTextAt(font, text, xpos+2, ypos+2, lvl.Renderer)
+				//	DrawTextAt(font, text, xpos+2, ypos+2, lvl.Renderer)
+				DrawBitmapTextAtUnscaled(lvl.Renderer, lvl.spr, text, xpos+2, ypos+2)
 			}
 		}
 	}

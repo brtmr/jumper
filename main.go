@@ -7,10 +7,10 @@ import (
 	"os"
 )
 
-const VSYNC = false
-const DRAW_DEBUG = true
+const VSYNC = true
+const DRAW_DEBUG = false
 
-const SCALE = 4
+const SCALE = 2
 const DIRECTION_RIGHT = 0
 const DIRECTION_LEFT = 1
 const STOP = -1

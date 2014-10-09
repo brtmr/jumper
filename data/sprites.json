@@ -4,7 +4,7 @@
     "file"          :   "16blox.png",
     "width"         :   16,
     "height"        :   16,
-    "offset_x"      :   64,
+    "offset_x"      :   16,
     "offset_y"      :   0 
     },
     {
@@ -12,7 +12,31 @@
     "file"          :   "16blox.png",
     "width"         :   16,
     "height"        :   16,
+    "offset_x"      :   0,
+    "offset_y"      :   0 
+    },
+    {
+    "id_string"     :   "tile_gold",
+    "file"          :   "16blox.png",
+    "width"         :   16,
+    "height"        :   16,
+    "offset_x"      :   32,
+    "offset_y"      :   0 
+    },
+    {
+    "id_string"     :   "tile_diamond",
+    "file"          :   "16blox.png",
+    "width"         :   16,
+    "height"        :   16,
     "offset_x"      :   48,
+    "offset_y"      :   0 
+    },
+    {
+    "id_string"     :   "tile_earth",
+    "file"          :   "16blox.png",
+    "width"         :   16,
+    "height"        :   16,
+    "offset_x"      :   64,
     "offset_y"      :   0 
     },
     {
