@@ -1,0 +1,37 @@
+[
+    {
+        "health": 0,
+        "id": 0,
+        "name": "empty",
+        "sprite": "",
+        "solid" : false
+    },
+    {
+        "health": 100,
+        "id": 1,
+        "name": "stone",
+        "sprite": "tile_stone",
+        "solid" : true
+    },
+    {
+        "health": 10,
+        "id": 2,
+        "name": "earth",
+        "sprite": "tile_earth",
+        "solid" :   true
+    },
+    {
+        "health": 10,
+        "id": 3,
+        "name": "diamond",
+        "sprite": "tile_diamond",
+        "solid" :   true
+    },
+    {
+        "health": 100,
+        "id": 4,
+        "name": "gold",
+        "sprite": "tile_gold",
+        "solid" :   true
+    }
+]
