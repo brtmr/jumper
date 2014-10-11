@@ -49,11 +49,15 @@ func (p *Player) Draw() {
 	X := p.drawPos.X() - p.camera.X()
 	Y := p.drawPos.Y() - p.camera.Y()
 	dstRec := sdl.Rect{X, Y, SCALE * sprite.Rect.W, SCALE * sprite.Rect.H}
+	var ret int
 	if p.direction == DIRECTION_RIGHT {
-		p.renderer.Copy(sprite.Texture, sprite.Rect, &dstRec)
+		ret = p.renderer.Copy(sprite.Texture, sprite.Rect, &dstRec)
 	} else {
-		p.renderer.CopyEx(sprite.Texture, sprite.Rect, &dstRec,
+		ret = p.renderer.CopyEx(sprite.Texture, sprite.Rect, &dstRec,
 			0, nil, sdl.FLIP_HORIZONTAL)
+	}
+	if ret != 0 {
+		SdlPanic()
 	}
 }
 

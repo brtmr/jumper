@@ -32,8 +32,8 @@ type Sprite struct {
 }
 
 type SpriteManager struct {
-	sprmap  map[string]Sprite
-	fontMap map[string]*ttf.Font
+	sprmap map[string]Sprite
+	//fontMap map[string]*ttf.Font
 }
 
 //methods
@@ -48,10 +48,11 @@ func (spr SpriteManager) GetSprite(id string) Sprite {
 	return sprite
 }
 
+/*
 func (spr SpriteManager) GetFont(id string) *ttf.Font {
 	return spr.fontMap[id]
 }
-
+*/
 //functions
 
 /*
@@ -105,9 +106,9 @@ func Init_from_json(json_path string, renderer *sdl.Renderer) SpriteManager {
 		m[tile_object.Id_string] = spr
 	}
 
-	fontMap := Init_Fonts()
+	//fontMap := Init_Fonts()
 
-	return SpriteManager{m, fontMap}
+	return SpriteManager{m} //, fontMap}
 }
 
 func (spr *SpriteManager) TearDown() {

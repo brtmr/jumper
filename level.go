@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
-	"math/rand"
 )
 
 type Level struct {
@@ -14,70 +13,6 @@ type Level struct {
 	//dimension in tiles
 	dimx int
 	dimy int
-}
-
-/*
-func DummyLevel(spr *SpriteManager, renderer *sdl.Renderer, cam *Camera) Level {
-	lsize := 40
-	tiles := make([][]Tile, lsize, lsize)
-	for i := 0; i < lsize; i++ {
-		r := make([]Tile, lsize, lsize)
-		for j := 0; j < lsize; j++ {
-			var tl Tile
-			var solid bool
-			if i < 9 {
-				solid = false
-			} else {
-				solid = true
-			}
-			tl = RandomTile(spr, solid)
-			r[j] = tl
-		}
-		tiles[i] = r
-	}
-
-	tiles[4][5] = RandomTile(spr, true)
-	tiles[4][6] = Tile{spr.GetSprite("tile_stone"), 100, true}
-	tiles[4][7] = Tile{spr.GetSprite("tile_stone"), 100, true}
-	tiles[5][5] = Tile{spr.GetSprite("tile_stone"), 100, true}
-	tiles[5][6] = Tile{spr.GetSprite("tile_stone"), 100, true}
-	tiles[5][7] = Tile{spr.GetSprite("tile_stone"), 100, true}
-	tiles[6][5] = Tile{spr.GetSprite("tile_stone"), 100, true}
-	tiles[6][6] = Tile{spr.GetSprite("tile_stone"), 100, true}
-	tiles[6][7] = Tile{spr.GetSprite("tile_stone"), 100, true}
-
-	tiles[6][10] = Tile{spr.GetSprite("tile_stone"), 100, true}
-	tiles[6][11] = Tile{spr.GetSprite("tile_stone"), 100, true}
-	tiles[6][12] = Tile{spr.GetSprite("tile_stone"), 100, true}
-
-	for i := 0; i < 10; i++ {
-		tiles[i][lsize-1] = Tile{spr.GetSprite("tile_stone"), 100, true}
-	}
-	return Level{tiles[:][:], cam, renderer, spr, lsize, lsize}
-}
-*/
-
-func RandomTile(spr *SpriteManager, solid bool) Tile {
-	var tl Tile
-	ra := rand.Int() % 5
-	switch ra {
-	case 0:
-		tl = Tile{spr.GetSprite("tile_stone"), 100, solid}
-		break
-	case 1:
-		tl = Tile{spr.GetSprite("tile_stone"), 100, solid}
-		break
-	case 2:
-		tl = Tile{spr.GetSprite("tile_stone_skull"), 100, solid}
-		break
-	case 3:
-		tl = Tile{spr.GetSprite("tile_diamond"), 100, solid}
-		break
-	case 4:
-		tl = Tile{spr.GetSprite("tile_gold"), 100, solid}
-		break
-	}
-	return tl
 }
 
 func (lvl Level) Draw() {
@@ -98,7 +33,10 @@ func (lvl Level) Draw() {
 			ypos := int32(y)*Tile_size - lvl.camera.Y()
 			dstRec := sdl.Rect{xpos, ypos, Tile_size, Tile_size}
 			if tl.Solid() {
-				lvl.Renderer.Copy(tl.Sprite().Texture, tl.Sprite().Rect, &dstRec)
+				ret := lvl.Renderer.Copy(tl.Sprite().Texture, tl.Sprite().Rect, &dstRec)
+				if ret != 0 {
+					SdlPanic()
+				}
 			}
 			if DRAW_DEBUG {
 				lvl.Renderer.SetDrawColor(254, 0, 0, 255)

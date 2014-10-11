@@ -36,7 +36,10 @@ func DrawBitmapTextAt(renderer *sdl.Renderer, spr *SpriteManager, text string,
 		str := string(char)
 		sprite := spr.GetSprite(str)
 		dst := sdl.Rect{x + int32(i*SCALE*6), y, SCALE * 6, SCALE * 7}
-		renderer.Copy(sprite.Texture, sprite.Rect, &dst)
+		ret := renderer.Copy(sprite.Texture, sprite.Rect, &dst)
+		if ret != 0 {
+			SdlPanic()
+		}
 	}
 }
 
@@ -46,6 +49,9 @@ func DrawBitmapTextAtUnscaled(renderer *sdl.Renderer, spr *SpriteManager, text s
 		str := string(char)
 		sprite := spr.GetSprite(str)
 		dst := sdl.Rect{x + int32(i*6), y, 6, 7}
-		renderer.Copy(sprite.Texture, sprite.Rect, &dst)
+		ret := renderer.Copy(sprite.Texture, sprite.Rect, &dst)
+		if ret != 0 {
+			SdlPanic()
+		}
 	}
 }

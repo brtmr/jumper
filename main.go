@@ -51,7 +51,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Failed to initialize SDL: %s\n", sdl.GetError())
 		os.Exit(2)
 	}
-	ttf.Init()
+	//ttf.Init()
 	window := sdl.CreateWindow("jumper", sdl.WINDOWPOS_UNDEFINED,
 		sdl.WINDOWPOS_UNDEFINED,
 		SCREEN_WIDTH, SCREEN_HEIGHT, sdl.WINDOW_SHOWN)
@@ -59,6 +59,9 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", sdl.GetError())
 		os.Exit(2)
 	}
+	//make the window current
+	context := sdl.GL_CreateContext(window)
+	sdl.GL_MakeCurrent(window, context)
 	var renderflags uint32
 	if VSYNC {
 		renderflags = sdl.RENDERER_ACCELERATED | sdl.RENDERER_PRESENTVSYNC
@@ -81,9 +84,10 @@ func main() {
 	var dt uint32
 	var alpha float64
 
-	dt = 33 //time for a single logic frame.
+	dt = 40 //time for a single logic frame.
 
 	for {
+		fmt.Println(sdl.GetError())
 		/*
 			begin mainloop
 			implemented as described in
@@ -141,16 +145,20 @@ func Game_Init(renderer *sdl.Renderer) GameData {
 }
 
 func (gd *GameData) Draw(fps string) {
-	gd.renderer.Clear()
+	var ret int
+	ret = gd.renderer.Clear()
+	if ret != 0 {
+		SdlPanic()
+	}
 	//draw the sky
 	sky := gd.Spr.GetSprite("sky")
-	gd.renderer.Copy(sky.Texture, sky.Rect, nil)
-
+	ret = gd.renderer.Copy(sky.Texture, sky.Rect, nil)
+	if ret != 0 {
+		SdlPanic()
+	}
 	gd.Lvl.Draw()
 	gd.Ply.Draw()
-
 	DrawBitmapTextAt(gd.renderer, gd.Spr, fps, 50, 50)
-
 	gd.renderer.Present()
 }
 
@@ -192,7 +200,7 @@ func (gd *GameData) handleKeyUp(sym sdl.Keysym) {
 }
 
 func (gd *GameData) handleEvents() {
-	sdl.PumpEvents()
+	//	sdl.PumpEvents()
 	var event sdl.Event
 	for event = sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 		switch t := event.(type) {
@@ -219,4 +227,9 @@ func (gd *GameData) handleEvents() {
 
 func GetDataPath() string {
 	return os.Getenv("GOPATH") + "/src/github.com/rtmb/jumper/data/"
+}
+
+func SdlPanic() {
+	err := sdl.GetError()
+	panic(err)
 }
